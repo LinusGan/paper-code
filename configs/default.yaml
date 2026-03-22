@@ -1,0 +1,75 @@
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  output_dir: outputs
+  market_path: data/raw/market.parquet
+  news_path: data/raw/news.parquet
+  raw_news_path: data/raw/news/raw_articles.parquet
+  cleaned_news_path: data/processed/news/cleaned_articles.parquet
+  deduped_news_path: data/processed/news/deduped_articles.parquet
+  prepared_market_path: data/processed/prepared_market.parquet
+  aligned_news_path: data/processed/news/aligned_articles.parquet
+  daily_text_features_path: data/processed/news/daily_text_features.parquet
+  encoded_news_path: data/processed/news/encoded_news.parquet
+  main_table_path: data/processed/main_table.parquet
+  daily_embeddings_path: data/processed/news/daily_embeddings.parquet
+  sources_config_path: configs/sources.yaml
+
+features:
+  lookback: 20
+  fillna_value: 0.0
+  split_dates:
+    train_end: "2022-12-31"
+    valid_end: "2023-12-31"
+    test_end: "2024-12-31"
+  exclude_regime_inputs: true
+
+text:
+  backend: dummy
+  device: cpu
+  batch_size: 16
+  max_length: 256
+  embedding_dim: 16
+  text_column: content_clean
+  title_fallback: true
+  model_name_or_path: ""
+  sentiment_model_name_or_path: ""
+  embedding_model_name_or_path: ""
+
+news:
+  timezone: Asia/Shanghai
+  market_close_time: "15:00"
+  request_timeout_seconds: 15
+  retry_attempts: 3
+  title_similarity_threshold: 0.95
+  dedup_window_hours: 24
+
+model:
+  family: transformer
+  modality: multimodal
+  task: cls
+  fusion: gate
+  text_repr: sentiment
+  hidden_dim: 64
+  dropout: 0.1
+  num_layers: 2
+  num_heads: 4
+  xgboost_fallback: true
+
+train:
+  seed: 42
+  batch_size: 32
+  epochs: 20
+  learning_rate: 0.001
+  weight_decay: 0.0
+  early_stopping_patience: 5
+  task_weights:
+    cls: 1.0
+    reg: 1.0
+  num_workers: 0
+
+eval:
+  threshold: 0.5
+  annualization: 252
+  transaction_cost: 0.0
+  do_plot: true

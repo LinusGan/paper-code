@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "csi300-multimodal"
+version = "0.1.0"
+description = "Research pipeline for CSI300 multimodal forecasting with market and news data."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "pyarrow>=14.0",
+  "PyYAML>=6.0",
+  "requests>=2.31",
+  "beautifulsoup4>=4.12",
+  "lxml>=5.0",
+  "tenacity>=8.2",
+  "scikit-learn>=1.4",
+  "torch>=2.2",
+  "transformers>=4.40",
+  "xgboost>=2.0",
+  "matplotlib>=3.8",
+  "seaborn>=0.13",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+crawl-news = "csi300_multimodal.cli:crawl_news_main"
+prepare-market = "csi300_multimodal.cli:prepare_market_main"
+prepare-news = "csi300_multimodal.cli:prepare_news_main"
+encode-text = "csi300_multimodal.cli:encode_text_main"
+build-dataset = "csi300_multimodal.cli:build_dataset_main"
+train = "csi300_multimodal.cli:train_main"
+evaluate = "csi300_multimodal.cli:evaluate_main"
+run-suite = "csi300_multimodal.cli:run_suite_main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

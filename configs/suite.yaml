@@ -1,0 +1,12 @@
+data:
+  output_dir: outputs
+
+suite:
+  name: baseline_suite
+  base_config: configs/default.yaml
+  axes:
+    model.family: [xgboost, lstm, transformer]
+    model.modality: [num, multimodal]
+    model.task: [cls, reg, multitask]
+    model.text_repr: [sentiment]
+    model.fusion: [concat, gate]
